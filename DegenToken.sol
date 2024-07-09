@@ -1,3 +1,5 @@
+// 0x05f7AA0C3e939feFD7cf2216BB7cF88794e265eD
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -30,7 +32,7 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
     }
 
     function gameStore() public pure returns (string memory) {
-        return "1.Player1 NFT value = 200 \n 2. Player2 value = 100 \n 3. Player3 value = 75";
+        return "1.t-shirt NFT value = 200 \n 2. Boots value = 100 \n 3. Hat value = 75";
     }
 
     function redeemTokens(uint choice) external payable {
