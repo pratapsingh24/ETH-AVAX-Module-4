@@ -18,6 +18,9 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
 
     event ItemRedeemed(address indexed player, string item);
 
+    // Mapping to keep track of redeemed items for each player
+    mapping(address => string[]) private redeemedItems;
+
     constructor() ERC20("Degen", "DGN") Ownable(msg.sender) {}
 
     function mint(address to, uint256 amount) public onlyOwner {
@@ -40,17 +43,17 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
     }
 
     function gameStore() public pure returns (string memory) {
-        return "1. T-shirt value = 200 \n2. Boots value = 100 \n3. Hat value = 75";
+        return "1. T-shirt NFT value = 200 \n2. Boots value = 100 \n3. Hat value = 75";
     }
 
     function redeemTokens(uint choice) external {
         require(choice >= 1 && choice <= 3, "Invalid selection");
-        
+
         string memory item;
         uint cost;
-        
+
         if (choice == 1) {
-            item = "T-shirt";
+            item = "T-shirt NFT";
             cost = 200;
         } else if (choice == 2) {
             item = "Boots";
@@ -61,8 +64,13 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
         }
 
         require(balanceOf(msg.sender) >= cost, "Insufficient balance");
-        
+
         _burn(msg.sender, cost);
+        redeemedItems[msg.sender].push(item);
         emit ItemRedeemed(msg.sender, item);
+    }
+
+    function getRedeemedItems() external view returns (string[] memory) {
+        return redeemedItems[msg.sender];
     }
 }
